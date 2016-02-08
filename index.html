@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Socket.io chat</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+</head>
+
+<body>
+    Your alias:
+    <input autocomplete="off" id="alias" type="text" />
+    <ul id="messages"></ul>
+    <span id="typing"></span>
+    <form action="">
+        <input autocomplete="off" id="message" type="text" />
+        <button type="submit">Send</button>
+    </form>
+    <script type="text/javascript">
+    var socket = io('http://192.168.1.80:3000');
+
+    function addMessageToList(msg) {
+        var text = msg.from + ' said: ' + msg.message;
+        var element = $('<li>').text(text);
+        $('#messages').append(element);
+    }
+
+    function isFromMySelf(msg) {
+        var isFromMySelf = msg.from === $('#alias').val();
+        return isFromMySelf;
+    }
+
+    function updateUsersTyping(users) {
+        if (users.length === 0) {
+            $('#typing').text('');
+            return;
+        }
+        var text = '';
+        for (var i = 0; i < users.length; i++) {
+            text = users[i] + ' ';
+            if (i + 1 !== users.length) {
+                text += ', ';
+            } else if (users.length !== 1) {
+                text += 'and';
+            }
+        }
+        text += users.length === 1 ? 'is' : 'are';
+        text += ' typing';
+        $('#typing').text(text);
+    }
+
+    $('form').submit(function() {
+        var alias = $('#alias').val();
+        var msg = {
+            from: alias,
+            message: $('#message').val()
+        };
+        addMessageToList(msg);
+        socket.emit('chatmessage', msg);
+
+        isTyping = false;
+        socket.emit('istyping', {
+            from: alias,
+            isTyping: false
+        });
+        $('#message').val('');
+        return false;
+    });
+
+    socket.on('chatmessage', function(msg) {
+        if (msg.hasOwnProperty('message') && msg.hasOwnProperty('from')) {
+            if (isFromMySelf(msg)) {
+                console.log('message sent');
+                return;
+            }
+            addMessageToList(msg);
+            return;
+        } else {
+            console.error('bad format:', msg);
+        }
+    });
+
+    var isTyping = false,
+        isTypingTimeout;
+    $('#message').keypress(function(e) {
+
+        if (e.which === 13 || isTyping)
+            return;
+
+        var alias = $('#alias').val();
+        if (isTypingTimeout) clearTimeout(isTypingTimeout);
+        isTyping = true;
+        // send is typing event (start typing)
+        socket.emit('istyping', {
+            from: alias,
+            isTyping: isTyping
+        });
+        timeout = setTimeout(function() {
+            // within 5s, send is not typing event (stop typing)
+            isTyping = false;
+            socket.emit('istyping', {
+                from: alias,
+                isTyping: isTyping
+            });
+        }, 3000);
+    });
+
+    var usersTyping = [];
+    socket.on('istyping', function(data) {
+        console.log('is typing:', data);
+        if (!isFromMySelf(data)) {
+            var idx = usersTyping.indexOf(data.from);
+            if (idx === -1) {
+                if (data.isTyping) {
+                    usersTyping.push(data.from);
+                }
+            } else {
+                if (!data.isTyping) {
+                    usersTyping.splice(idx, 1);
+                }
+            }
+        }
+        updateUsersTyping(usersTyping);
+    });
+    </script>
+</body>
+
+</html>
