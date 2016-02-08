@@ -1,4 +1,3 @@
-# README 
 Socket.io chat example http://socket.io/get-started/chat/
 - ~~Broadcast a message to connected users when someone connects or disconnects~~
 - ~~Add support for nicknames~~
