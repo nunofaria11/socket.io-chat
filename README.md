@@ -7,6 +7,8 @@ Socket.io chat example http://socket.io/get-started/chat/
 - Add private messaging
 - Share your improvements!
 
+To start running the server type `npm start`.
+
 **NOTES**
 - single files for simplicity
 - jquery for simplicty
@@ -15,3 +17,4 @@ Socket.io chat example http://socket.io/get-started/chat/
 - user dynamic server url in client (remove hardcoded ip)
 - add angular (code will be simpler)
 - add react (learn!)
+- add rooms support (to allow multiple rooms + private chats)
