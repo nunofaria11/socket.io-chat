@@ -5,7 +5,6 @@ Socket.io chat example http://socket.io/get-started/chat/
 - ~~Add “{user} is typing” functionality~~
 - ~~Show who’s online~~
 - Add private messaging
-- Share your improvements!
 
 To start running the server type `npm start`.
 - access `http://localhost:3000/react` for react UI
