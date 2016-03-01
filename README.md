@@ -16,7 +16,5 @@ To start running the server type `npm start`.
 - jquery for simplicty
 
 **TODO**
-- user dynamic server url in client (remove hardcoded ip)
-- add angular (code will be simpler)
-- add react (learn!)
+- hardcoded address!
 - add rooms support (to allow multiple rooms + private chats)
