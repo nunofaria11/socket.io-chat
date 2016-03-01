@@ -71,9 +71,10 @@ SocketContext.prototype.onChatMessage = function (m) {
         });
         this.client.alias = m.from.alias;
     }
-
+    var now = Date.now();
     var m = {
-        timestamp: Date.now(),
+        id: this.client.id + '-' + now,
+        timestamp: now,
         from: this.client,
         message: m.message
     };
