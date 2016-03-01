@@ -8,6 +8,8 @@ Socket.io chat example http://socket.io/get-started/chat/
 - Share your improvements!
 
 To start running the server type `npm start`.
+- access `http://localhost:3000/react` for react UI
+- access `http://localhost:3000/jquery` for jquery UI
 
 **NOTES**
 - single files for simplicity

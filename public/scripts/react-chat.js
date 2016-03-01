@@ -1,7 +1,7 @@
 /**
  * Created by NunoFaria on 27-02-2016.
  */
-var __SERVER__ = 'http://172.22.0.190:3000';
+var __SERVER__ = 'http://localhost:3000';
 var socket = null;
 
 /**

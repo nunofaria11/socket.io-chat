@@ -109,11 +109,11 @@ http.listen(_port, function () {
     console.log('listening on port %d', _port);
 });
 
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+app.get('/jquery', function (req, res) {
+    res.sendFile(__dirname + '/public/index-jquery.html');
 });
 
 
 app.get('/react', function (req, res) {
-    res.sendFile(__dirname + '/public/index2.html');
+    res.sendFile(__dirname + '/public/index-react.html');
 });
