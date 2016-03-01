@@ -10,10 +10,6 @@ To start running the server type `npm start`.
 - access `http://localhost:3000/react` for react UI
 - access `http://localhost:3000/jquery` for jquery UI
 
-**NOTES**
-- single files for simplicity
-- jquery for simplicty
-
 **TODO**
 - hardcoded address!
 - add rooms support (to allow multiple rooms + private chats)
