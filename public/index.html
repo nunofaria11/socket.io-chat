@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
-
+    <!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,21 +12,21 @@
 </head>
 
 <body>
-    Your alias:
-    <input autocomplete="off" id="alias" type="text" />
-    <br>
-    <span id="currentUsers"></span>
-    <br>
-    <ul id="messages"></ul>
-    <span id="typing"></span>
-    <form action="">
-        <input autocomplete="off" id="message" type="text" />
-        <button type="submit">Send</button>
-    </form>
-    <script type="text/javascript">
-    Object.prototype.values = function(o) {
+Your alias:
+<input autocomplete="off" id="alias" type="text"/>
+<br>
+<span id="currentUsers"></span>
+<br>
+<ul id="messages"></ul>
+<span id="typing"></span>
+<form action="">
+    <input autocomplete="off" id="message" type="text"/>
+    <button type="submit">Send</button>
+</form>
+<script type="text/javascript">
+    Object.prototype.values = function (o) {
         var i, k, keys = Object.keys(o),
-            values = [];
+                values = [];
         for (i = 0; i < keys.length; i++) {
             k = keys[i];
             if (o.hasOwnProperty(k))
@@ -41,7 +35,7 @@
         return values;
     };
 
-    var socket = io('http://192.168.1.80:3000');
+    var socket = io('http://localhost:3000');
 
     var clientData;
 
@@ -94,7 +88,7 @@
         $('#typing').text(text);
     }
 
-    $('form').submit(function() {
+    $('form').submit(function () {
         var alias = $('#alias').val();
         var clientId = clientData.clientId;
         var msg = {
@@ -119,7 +113,7 @@
         return false;
     });
 
-    socket.on('chatmessage', function(msg) {
+    socket.on('chatmessage', function (msg) {
         console.log('message received', msg);
         if (msg.hasOwnProperty('message') && msg.hasOwnProperty('from')) {
             if (isFromMySelf(msg)) {
@@ -134,8 +128,8 @@
     });
 
     var isTyping = false,
-        isTypingTimeout;
-    $('#message').keypress(function(e) {
+            isTypingTimeout;
+    $('#message').keypress(function (e) {
 
         if (e.which === 13 || isTyping)
             return;
@@ -152,7 +146,7 @@
             },
             isTyping: isTyping
         });
-        isTypingTimeout = setTimeout(function() {
+        isTypingTimeout = setTimeout(function () {
             // within 5s, send is not typing event (stop typing)
             isTyping = false;
             socket.emit('istyping', {
@@ -166,7 +160,7 @@
     });
 
     var usersTyping = [];
-    socket.on('istyping', function(data) {
+    socket.on('istyping', function (data) {
         //console.log('is typing:', data);
         if (!isFromMySelf(data)) {
             var idx = usersTyping.indexOf(data.from.alias);
@@ -183,7 +177,7 @@
         updateUsersTyping(usersTyping);
     });
 
-    socket.on('clientid', function(data) {
+    socket.on('clientid', function (data) {
         console.log('on init', data);
         clientData = {
             clientId: data.clientData.id,
@@ -200,26 +194,26 @@
         updateCurrentUsers(Object.values(currentUsers));
     });
 
-    socket.on('userconnected', function(data) {
+    socket.on('userconnected', function (data) {
         console.log('user connected:', data.from);
         //currentUsers.push(data.from);
         currentUsers[data.from.id] = data.from;
         updateCurrentUsers(Object.values(currentUsers));
     });
-    socket.on('userdisconnected', function(data) {
+    socket.on('userdisconnected', function (data) {
         console.log('user disconnected:', data.from);
         //var idx = currentUsers.indexOf(data.from);
         //currentUsers.splice(idx, 1);
         delete currentUsers[data.from.id];
         updateCurrentUsers(Object.values(currentUsers));
     });
-    socket.on('aliaschanged', function(data) {
+    socket.on('aliaschanged', function (data) {
         console.log('user changed alias:', data.from);
         var user = currentUsers[data.from.id];
         user.alias = data.current;
         updateCurrentUsers(Object.values(currentUsers));
     });
-    </script>
+</script>
 </body>
 
 </html>
