@@ -6,10 +6,9 @@ Socket.io chat example http://socket.io/get-started/chat/
 - ~~Show who’s online~~
 - Add private messaging
 
-To install `npm install`.
-To start running the server `npm start`.
-- access `http://localhost:3000/react` for react UI
-- access `http://localhost:3000/jquery` for jquery UI
+`npm install` and `npm start`:
+- `http://localhost:3000/react` for react UI
+- `http://localhost:3000/jquery` for jquery UI
 
 **TODO**
 - hardcoded address!
