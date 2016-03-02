@@ -13,3 +13,4 @@ Socket.io chat example http://socket.io/get-started/chat/
 **TODO**
 - hardcoded address!
 - add rooms support (to allow multiple rooms + private chats)
+- add [redis](https://github.com/NodeRedis/node_redis)
