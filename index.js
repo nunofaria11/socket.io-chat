@@ -57,6 +57,7 @@ SocketContext.prototype.onDisconnect = function () {
         from: this.client
     };
     usersLoggedIn.splice(usersLoggedIn.indexOf(this.client), 1);
+    counter--;
     this.socket.broadcast.emit('userdisconnected', m);
 };
 SocketContext.prototype.onChatMessage = function (m) {

@@ -257,7 +257,13 @@ var ChatBox = React.createClass({
             from: fromData,
             isTyping: false
         });
-        this.setState({message: '', messages: messages});
+        if (this.state.isTypingTimeout) {
+            clearTimeout(this.state.isTypingTimeout);
+        }
+        this.setState({
+            message: '',
+            messages: messages
+        });
 
     },
     render: function () {
